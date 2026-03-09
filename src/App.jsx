@@ -1,5 +1,81 @@
 import React, { useState, useMemo } from "react";
-import { CheckCircle2, XCircle, ChevronRight, RotateCcw, Award, Network, ShieldAlert, Home, BookOpen, ArrowLeft } from "lucide-react";
+import {
+  CheckCircle2,
+  XCircle,
+  ChevronRight,
+  RotateCcw,
+  Award,
+  Network,
+  ShieldAlert,
+  Home,
+  BookOpen,
+  ArrowLeft,
+  Settings,
+} from "lucide-react";
+
+// Dataset 0: Quiz 1
+const quiz1Data = [
+  { q: "Someone who takes good care of the systems others are using", a: "Systems Administrator" },
+  { q: "The SA task involving adding or removing users from the system", a: "User Management" },
+  { q: "Task that includes configuring, maintaining, and retiring disks, memory, and CPU", a: "Hardware Management" },
+  { q: "SA task involving installing or re-installing applications", a: "Software Management" },
+  { q: "Task where the SA must secure the entire computing environment", a: "Security Management" },
+  { q: "Task involving performing backup and restore operations", a: "Monitoring and Troubleshooting" },
+  { q: "Task that involves general user support and maintaining licenses", a: "Documentation and Help Desk" },
+  { q: "SA task that includes system planning and assessing new technologies", a: "Automation, Planning, Policies, and Auditing" },
+  { q: "Requirement characterized by staying focused on different tasks and using time effectively", a: "Strong Organizational Skills" },
+  { q: "Requirement characterized by honesty, fairness, and equity in personal and professional relationships", a: "Ethical behavior" },
+  { q: "What year was SAGE (Systems Administrators Guild) established", a: "1992" },
+  { q: "The SA mantra states that the computer environment does not exist solely for the (blank) of the SA", a: "Amusement" },
+  { q: "SAGE Level 1 corresponds to what rank", a: "Novice" },
+  { q: "SAGE Level 4 corresponds to what rank", a: "Senior" },
+  { q: "A site with < 50 computers, all running the same OS and 20 or fewer users", a: "Small uniform site" },
+  { q: "A site with up to 100 systems, running more than 2 different OS, and up to 100 users", a: "Complex site" },
+  { q: "The SA principle that is considered 'the foundation'", a: "Policy" },
+  { q: "The SA principle that is the ultimate goal, allowing for quantitative forecasts of system state", a: "Predictability" },
+  { q: "The measure of a system's ability to increase or decrease performance in response to demand", a: "Scalability" },
+  { q: "Principle stating that restriction of unnecessary privilege protects against accidental damage", a: "Minimum privilege" },
+  { q: "The SA responsibility model standing for Software, Users, Machines and Create, Read, Update, Delete", a: "SUM CRUD" },
+  { q: "In Evard's 5 states, the first state of a machine", a: "New" },
+  { q: "Evard's state for a computer with the OS installed but not configured for the environment", a: "Clean" },
+  { q: "Evard's state for a computer configured correctly according to requirements", a: "Configured" },
+  { q: "Evard's state for a computer that is misconfigured, out of date, or returned with 'stains'", a: "Unknown" },
+  { q: "The movement from the Clean state to the Configured state", a: "Initialize" },
+  { q: "The gradual process of change that results in a computer having an unknown state", a: "Entropy" },
+  { q: "The process of getting an unknown machine back into specification", a: "Debug" },
+  { q: "Controlling (blank) involves managing the growth of devices, users, applications, and protocols", a: "Complexity" },
+  { q: "FCAPS: Concerned with detection, isolation, and correction of abnormal operations", a: "Fault Management" },
+  { q: "FCAPS: Concerned with identifying managed resources and their connectivity", a: "Configuration Management" },
+  { q: "FCAPS: Concerned with keeping track of usage for charging purposes", a: "Accounting Management" },
+  { q: "FCAPS: Concerned with monitoring and evaluating the behavior of managed resources", a: "Performance Management" },
+  { q: "Managed resources are also called (blank) in SA or Network Management", a: "Managed Objects" },
+  { q: "Model used by network operators to compare capabilities of management systems", a: "FCAPS" },
+  { q: "The core function that all other FCAPS functions depend on", a: "Configuration Management" },
+  { q: "Network Management System (NMS) is based on what paradigm", a: "Manager-Agent" },
+  { q: "The collection of software devoted to network management tasks, also known as the management agent", a: "NME" },
+  { q: "The interaction where a manager sends a request to an agent which then responds", a: "Polling" },
+  { q: "The interaction where an agent initiates the flow of information to the manager without being asked", a: "Event Reporting" },
+  { q: "The local database where the configuration of a device is stored", a: "MIB" },
+  { q: "Active Directory role responsible for managing users, computers, and policies", a: "Domain Services" },
+  { q: "Active Directory role responsible for digital certificates and PKI", a: "Certificate Services" },
+  { q: "Active Directory role that facilitates cross-organizational access to applications", a: "Federation Services" },
+  { q: "Active Directory role that safeguards digital information using Word or Outlook", a: "Rights Management Services" },
+  { q: "Active Directory role that provides a copy of AD structure without domain restrictions", a: "Lightweight Directory Services" },
+  { q: "The software protocol used by AD DS to locate data about organizations and individuals", a: "LDAP" },
+  { q: "The process of verifying a user's identity on a network", a: "Authentication" },
+  { q: "The process of verifying that an authenticated user has permission to perform an action", a: "Authorization" },
+  { q: "Unique attribute issued to a user or group for identification in access control", a: "SID" },
+  { q: "The list of access control entries that identifies security principles and their rights", a: "ACL" },
+  { q: "The specific ACL that identifies who is allowed or denied access to an object", a: "DACL" },
+  { q: "ACL that enables administrators to log attempts to access a secured object", a: "SACL" },
+  { q: "A domain controller that has a read-only partition and cannot be updated directly", a: "RODC" },
+  { q: "The AD DS physical component that stores directory info as a file on the DC", a: "Data Store" },
+  { q: "The specific file name for the AD DS database", a: "NTDS.dit" },
+  { q: "The logical partition in AD that defines the list of attributes all objects can have", a: "Schema" },
+  { q: "A collection of domains that share a common schema and configuration in a contiguous namespace", a: "Domain tree" },
+  { q: "A collection of one or more domain trees that share common schema and global catalog", a: "Forest" },
+  { q: "Standard cabling practice for commercial and telecommunications infrastructure", a: "EIA/TIA Wiring Standards" },
+];
 
 // Dataset 1: Final Exam OT
 const finalExamData = [
@@ -56,7 +132,7 @@ const finalExamData = [
   { q: "What does ITU stands for", a: "International Telecommunication Union" },
   { q: "What does EIA stands for", a: "Electronic Industries Association" },
   { q: "What does TIA stands for", a: "Telecommunication Industries Association" },
-  { q: "What does DMTF stands for", a: "Distributed Management Task Force" }
+  { q: "What does DMTF stands for", a: "Distributed Management Task Force" },
 ];
 
 // Dataset 2: Quiz 2
@@ -106,7 +182,7 @@ const quiz2Data = [
   { q: "It allows you to see MIB using the graphical user interface (GUI)", a: "MIB Browser" },
   { q: "A protocol that provides only primitive and limited security capability via the concept of community", a: "SNMPv1" },
   { q: "The systems administrator wants to determine segment connectivity of one the end-users Windows workstation to the server. What command should be used?", a: "tracert" },
-  { q: "It is issued by the SNMP manager on behalf of the NS to modify information in an agent", a: "SetRequest PDU" }
+  { q: "It is issued by the SNMP manager on behalf of the NS to modify information in an agent", a: "SetRequest PDU" },
 ];
 
 const shuffleArray = (array) => {
@@ -119,7 +195,7 @@ const shuffleArray = (array) => {
 };
 
 const App = () => {
-  const [currentStep, setCurrentStep] = useState('selection'); // selection | quiz | result
+  const [currentStep, setCurrentStep] = useState("selection");
   const [activeSet, setActiveSet] = useState([]);
   const [quizName, setQuizName] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -128,15 +204,13 @@ const App = () => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
 
-  // Memoized options for the current question
   const currentOptions = useMemo(() => {
     if (shuffledQuestions.length === 0) return [];
     const correct = shuffledQuestions[currentIndex].a;
-    
-    // Get unique answers from the active set for distractors
-    const allUniqueAnswers = [...new Set(activeSet.map(item => item.a))];
-    const otherAnswers = allUniqueAnswers.filter(a => a.toLowerCase() !== correct.toLowerCase());
-    
+    const allUniqueAnswers = [...new Set(activeSet.map((item) => item.a))];
+    const otherAnswers = allUniqueAnswers.filter(
+      (a) => a.toLowerCase() !== correct.toLowerCase()
+    );
     const distractors = shuffleArray(otherAnswers).slice(0, 3);
     return shuffleArray([correct, ...distractors]);
   }, [currentIndex, shuffledQuestions, activeSet]);
@@ -147,7 +221,7 @@ const App = () => {
     setShuffledQuestions(shuffleArray(set));
     setCurrentIndex(0);
     setScore(0);
-    setCurrentStep('quiz');
+    setCurrentStep("quiz");
     setIsAnswered(false);
     setSelectedAnswer(null);
   };
@@ -157,40 +231,63 @@ const App = () => {
     setSelectedAnswer(option);
     setIsAnswered(true);
     if (option.toLowerCase() === shuffledQuestions[currentIndex].a.toLowerCase()) {
-      setScore(prev => prev + 1);
+      setScore((prev) => prev + 1);
     }
   };
 
   const nextQuestion = () => {
     if (currentIndex < shuffledQuestions.length - 1) {
-      setCurrentIndex(prev => prev + 1);
+      setCurrentIndex((prev) => prev + 1);
       setIsAnswered(false);
       setSelectedAnswer(null);
     } else {
-      setCurrentStep('result');
+      setCurrentStep("result");
     }
   };
 
   const resetToMenu = () => {
-    setCurrentStep('selection');
+    setCurrentStep("selection");
     setActiveSet([]);
     setQuizName("");
   };
 
-  // ---------------- UI COMPONENTS ----------------
-
-  if (currentStep === 'selection') {
+  if (currentStep === "selection") {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
-        <div className="max-w-4xl w-full">
+        <div className="max-w-6xl w-full">
           <header className="text-center mb-12">
-            <h1 className="text-4xl font-black text-slate-900 mb-2">Netman & Security Portal</h1>
-            <p className="text-slate-500 font-medium italic">Select a quiz to begin your revision</p>
+            <h1 className="text-4xl font-black text-slate-900 mb-2">
+              Netman & Security Portal
+            </h1>
+            <p className="text-slate-500 font-medium italic">
+              Select a quiz to begin your revision
+            </p>
           </header>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Final Exam OT Card */}
-            <button 
+          <div className="grid md:grid-cols-3 gap-6">
+<button
+  onClick={() => selectQuiz(quiz1Data, "Quiz 1")}
+  className="group bg-white p-8 rounded-[2.5rem] shadow-xl border-2 border-transparent hover:border-emerald-500 transition-all text-left flex flex-col items-start"
+>
+  <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+    <Settings className="text-emerald-600 w-8 h-8" />
+  </div>
+
+  <h2 className="text-2xl font-bold text-slate-800 mb-2">Quiz 1</h2>
+
+  <p className="text-slate-500 text-sm mb-6 flex-1">
+    Systems Administration fundamentals, FCAPS, Active Directory, authentication and authorization concepts.
+  </p>
+
+  <div className="w-full flex justify-between items-center text-xs font-black uppercase tracking-widest text-emerald-600">
+    <span>{quiz1Data.length} Questions</span>
+    <span className="bg-emerald-50 px-3 py-1 rounded-full group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+      Start →
+    </span>
+  </div>
+</button>
+
+            <button
               onClick={() => selectQuiz(finalExamData, "Final Exam OT")}
               className="group bg-white p-8 rounded-[2.5rem] shadow-xl border-2 border-transparent hover:border-blue-500 transition-all text-left flex flex-col items-start"
             >
@@ -198,15 +295,18 @@ const App = () => {
                 <ShieldAlert className="text-blue-600 w-8 h-8" />
               </div>
               <h2 className="text-2xl font-bold text-slate-800 mb-2">Final Exam OT</h2>
-              <p className="text-slate-500 text-sm mb-6 flex-1">Comprehensive cybersecurity management architecture, NM software systems, and data description languages.</p>
+              <p className="text-slate-500 text-sm mb-6 flex-1">
+                Comprehensive cybersecurity management architecture, NM software systems, and data description languages.
+              </p>
               <div className="w-full flex justify-between items-center text-xs font-black uppercase tracking-widest text-blue-600">
                 <span>{finalExamData.length} Questions</span>
-                <span className="bg-blue-50 px-3 py-1 rounded-full group-hover:bg-blue-600 group-hover:text-white transition-colors">Start &rarr;</span>
+                <span className="bg-blue-50 px-3 py-1 rounded-full group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  Start &rarr;
+                </span>
               </div>
             </button>
 
-            {/* Quiz 2 Card */}
-            <button 
+            <button
               onClick={() => selectQuiz(quiz2Data, "Quiz 2")}
               className="group bg-white p-8 rounded-[2.5rem] shadow-xl border-2 border-transparent hover:border-indigo-500 transition-all text-left flex flex-col items-start"
             >
@@ -214,10 +314,14 @@ const App = () => {
                 <Network className="text-indigo-600 w-8 h-8" />
               </div>
               <h2 className="text-2xl font-bold text-slate-800 mb-2">Quiz 2</h2>
-              <p className="text-slate-500 text-sm mb-6 flex-1">SNMP operations, PDUs, Network design principles (resiliency, modularity), and troubleshooting tools (traceroute).</p>
+              <p className="text-slate-500 text-sm mb-6 flex-1">
+                SNMP operations, PDUs, network design principles, and troubleshooting tools like traceroute and tracert.
+              </p>
               <div className="w-full flex justify-between items-center text-xs font-black uppercase tracking-widest text-indigo-600">
                 <span>{quiz2Data.length} Questions</span>
-                <span className="bg-indigo-50 px-3 py-1 rounded-full group-hover:bg-indigo-600 group-hover:text-white transition-colors">Start &rarr;</span>
+                <span className="bg-indigo-50 px-3 py-1 rounded-full group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                  Start &rarr;
+                </span>
               </div>
             </button>
           </div>
@@ -226,7 +330,7 @@ const App = () => {
     );
   }
 
-  if (currentStep === 'result') {
+  if (currentStep === "result") {
     const percentage = Math.round((score / shuffledQuestions.length) * 100);
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
@@ -240,13 +344,13 @@ const App = () => {
             Score: {score} / {shuffledQuestions.length} Correct
           </p>
           <div className="space-y-4">
-            <button 
+            <button
               onClick={() => selectQuiz(activeSet, quizName)}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-lg"
             >
               <RotateCcw className="w-5 h-5" /> Retake This Quiz
             </button>
-            <button 
+            <button
               onClick={resetToMenu}
               className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all"
             >
@@ -263,9 +367,8 @@ const App = () => {
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8 font-sans">
       <div className="max-w-2xl mx-auto">
-        {/* Quiz Header */}
         <div className="mb-10 flex items-center gap-4">
-          <button 
+          <button
             onClick={resetToMenu}
             className="p-3 bg-white hover:bg-slate-100 rounded-2xl shadow-sm border border-slate-200 transition-all text-slate-600"
           >
@@ -281,19 +384,22 @@ const App = () => {
               </span>
             </div>
             <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden shadow-inner">
-              <div 
-                className="bg-blue-600 h-full transition-all duration-500 ease-out" 
-                style={{ width: `${((currentIndex + 1) / shuffledQuestions.length) * 100}%` }}
+              <div
+                className="bg-blue-600 h-full transition-all duration-500 ease-out"
+                style={{
+                  width: `${((currentIndex + 1) / shuffledQuestions.length) * 100}%`,
+                }}
               ></div>
             </div>
           </div>
         </div>
 
-        {/* Question Area */}
         <div className="bg-white rounded-[3rem] shadow-2xl p-8 md:p-12 mb-8 border border-white">
           <div className="flex items-center gap-2 mb-6">
             <BookOpen className="w-4 h-4 text-blue-400" />
-            <span className="text-[10px] font-black text-blue-400 uppercase tracking-tighter">Knowledge Check</span>
+            <span className="text-[10px] font-black text-blue-400 uppercase tracking-tighter">
+              Knowledge Check
+            </span>
           </div>
           <h3 className="text-2xl md:text-3xl font-bold text-slate-800 leading-snug mb-12">
             {currentQ.q}?
@@ -303,15 +409,19 @@ const App = () => {
             {currentOptions.map((option, idx) => {
               const isCorrect = option.toLowerCase() === currentQ.a.toLowerCase();
               const isSelected = selectedAnswer === option;
-              
-              let style = "border-2 border-slate-50 bg-slate-50 hover:border-blue-100 hover:bg-blue-50/30 text-slate-700";
+
+              let style =
+                "border-2 border-slate-50 bg-slate-50 hover:border-blue-100 hover:bg-blue-50/30 text-slate-700";
               if (isAnswered) {
                 if (isCorrect) {
-                  style = "border-emerald-500 bg-emerald-50 text-emerald-800 ring-4 ring-emerald-100 shadow-md scale-[1.02]";
+                  style =
+                    "border-emerald-500 bg-emerald-50 text-emerald-800 ring-4 ring-emerald-100 shadow-md scale-[1.02]";
                 } else if (isSelected && !isCorrect) {
-                  style = "border-rose-500 bg-rose-50 text-rose-800 ring-4 ring-rose-100 shadow-md scale-[0.98]";
+                  style =
+                    "border-rose-500 bg-rose-50 text-rose-800 ring-4 ring-rose-100 shadow-md scale-[0.98]";
                 } else {
-                  style = "border-transparent bg-slate-50 text-slate-400 opacity-40";
+                  style =
+                    "border-transparent bg-slate-50 text-slate-400 opacity-40";
                 }
               }
 
@@ -323,22 +433,25 @@ const App = () => {
                   className={`group relative w-full p-6 rounded-3xl text-left font-bold transition-all flex items-center justify-between text-base ${style}`}
                 >
                   <span className="flex-1 pr-6">{option}</span>
-                  {isAnswered && isCorrect && <CheckCircle2 className="w-7 h-7 text-emerald-500 flex-shrink-0" />}
-                  {isAnswered && isSelected && !isCorrect && <XCircle className="w-7 h-7 text-rose-500 flex-shrink-0" />}
+                  {isAnswered && isCorrect && (
+                    <CheckCircle2 className="w-7 h-7 text-emerald-500 flex-shrink-0" />
+                  )}
+                  {isAnswered && isSelected && !isCorrect && (
+                    <XCircle className="w-7 h-7 text-rose-500 flex-shrink-0" />
+                  )}
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Footer Navigation */}
         <div className="flex justify-end items-center">
           {isAnswered && (
             <button
               onClick={nextQuestion}
               className="bg-slate-900 hover:bg-black text-white font-black py-4 px-12 rounded-[1.5rem] flex items-center gap-4 transition-all shadow-2xl hover:-translate-y-1 active:translate-y-0"
             >
-              {currentIndex === shuffledQuestions.length - 1 ? 'See Results' : 'Next Question'}
+              {currentIndex === shuffledQuestions.length - 1 ? "See Results" : "Next Question"}
               <ChevronRight className="w-6 h-6" />
             </button>
           )}
