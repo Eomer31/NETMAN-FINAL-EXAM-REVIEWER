@@ -153,7 +153,7 @@ const finalExamData = [
   { q: "A security requirement for making information accessible to only authorized users and includes the hiding of the existence of information", a: "Secrecy" },
   { q: "A security requirement for making information modifiable to only authorized users", a: "Integrity" },
   { q: "A security threat where an entity pretends to be a different entity", a: "Masquerade" },
-  { q: "Which among the following is a security threat to availability", a: "Integrity" },
+  { q: "Which among the following is a security threat to availability", a: "Interruption" },
   { q: "A security threat where an unauthorized party inserts false information", a: "Fabrication" },
   { q: "All of the following are network assets except", a: "Bandwidth" },
   { q: "Network assets that is prone only to interruptions like theft and denial of service", a: "Hardware" },
